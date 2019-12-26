@@ -1,0 +1,157 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:cat"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        x:Class="cat.MainWindow"
+        mc:Ignorable="d"
+        Title="CatMaster" Height="494.033" Width="1118.111">
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:EnumToBooleanConverter x:Key="EnumToBoolean"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="0,0,2,-41">
+        <TextBlock x:Name="tblCatObservationDate" HorizontalAlignment="Left" Height="35" Margin="15,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" Text="ObsservationDate" RenderTransformOrigin="0.439,-0.947"/>
+        <DatePicker x:Name="dpObservateDate" HorizontalAlignment="Left" Height="24" Margin="92,8,0,0" VerticalAlignment="Top" Width="124" SelectedDate="{Binding ObservateDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.258,0.417"/>
+        <xctk:TimePicker x:Name="dpObservateTime" HorizontalAlignment="Left" Margin="216,10,0,0" VerticalAlignment="Top" Width="81" Height="20" Value="{Binding ObservateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Format="Custom" FormatString="HH:mm"/>
+        <TextBlock x:Name="tblCatId" HorizontalAlignment="Left" Height="21" Margin="17,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" Text="CatId"/>
+        <ComboBox x:Name="cbCatId" HorizontalAlignment="Left" Height="21" Margin="92,37,0,0" VerticalAlignment="Top" Width="213" ItemsSource="{Binding CatMasters}" SelectedItem="{Binding Cat}" SelectedValuePath="CatId" DisplayMemberPath="CatName" SelectedValue="{Binding CatId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="cbCatId_SelectionChanged"/>
+        <TextBlock x:Name="tblCatName" HorizontalAlignment="Left" Height="22" Margin="333,39,0,0" TextWrapping="Wrap" Text="CatName" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbCatName" HorizontalAlignment="Left" Height="21" Margin="410,38,0,0" TextWrapping="Wrap" Text="{Binding CatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="212" MaxLength="50"/>
+        <TextBlock x:Name="tblHairPattern" HorizontalAlignment="Left" Height="22" Margin="15,63,0,0" TextWrapping="Wrap" Text="HairPattern" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbHairPattern" HorizontalAlignment="Left" Height="23" Margin="92,62,0,0" TextWrapping="Wrap" Text="{Binding HairPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="213" MaxLength="50"/>
+        <StackPanel x:Name="pnGender" HorizontalAlignment="Left" Height="19" Margin="92,90,0,0" VerticalAlignment="Top" Width="213" Orientation="Horizontal">
+            <RadioButton x:Name="rbGenderMale" Content="Male" Margin="10,0,0,0" IsChecked="{Binding Gender, ConverterParameter=Male, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbGenderFemale" Content="Female" Margin="10,0,0,0" IsChecked="{Binding Gender, ConverterParameter=Female, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbGenderUnknown" Content="Unknown" Margin="10,0,0,0" IsChecked="{Binding Gender, ConverterParameter=Unknown, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <TextBlock x:Name="tblGender" HorizontalAlignment="Left" Height="20" Margin="15,89,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top" Width="72"/>
+        <StackPanel x:Name="pnBodyType" HorizontalAlignment="Left" Height="19" Margin="92,111,0,0" VerticalAlignment="Top" Width="257" Orientation="Horizontal">
+            <RadioButton x:Name="rbBodyTypeSmall" Content="Small" Margin="10,0,0,0" IsChecked="{Binding BodyType, ConverterParameter=Small, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbBodyTypeMidium" Content="Midium" Margin="10,0,0,0" IsChecked="{Binding BodyType, ConverterParameter=Midium, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbBodyTypeLarge" Content="Large" Margin="10,0,0,0" IsChecked="{Binding BodyType, ConverterParameter=Large, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbBodyTypeHuge" Content="Huge" Margin="10,0,0,0" IsChecked="{Binding BodyType, ConverterParameter=Huge, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <TextBlock x:Name="tblBodyType" HorizontalAlignment="Left" Height="19" Margin="15,110,0,0" TextWrapping="Wrap" Text="BodyType" VerticalAlignment="Top" Width="72"/>
+        <TextBlock x:Name="tblFaceType" HorizontalAlignment="Left" Height="22" Margin="15,131,0,0" TextWrapping="Wrap" Text="FaceType" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbFaceType" HorizontalAlignment="Left" Height="23" Margin="92,130,0,0" TextWrapping="Wrap" Text="{Binding FaceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="329" MaxLength="100"/>
+        <StackPanel x:Name="pnBodyType_Copy" HorizontalAlignment="Left" Height="19" Margin="92,159,0,0" VerticalAlignment="Top" Width="329" Orientation="Horizontal">
+            <RadioButton x:Name="rbAgeBaby" GroupName="Age" Content="Baby" Margin="10,0,0,0" IsChecked="{Binding Age, ConverterParameter=Baby, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbAgeYoung" GroupName="Age" Content="Young" Margin="10,0,0,0" IsChecked="{Binding Age, ConverterParameter=Young, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbAgeAdult" GroupName="Age" Content="Adult" Margin="10,0,0,0" IsChecked="{Binding Age, ConverterParameter=Adult, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbAgeOld" GroupName="Age" Content="Old" Margin="10,0,0,0" IsChecked="{Binding Age, ConverterParameter=Old, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbAgeUnknown" GroupName="Age" Content="Unknown" Margin="10,0,0,0" IsChecked="{Binding Age, ConverterParameter=Unknown, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <TextBlock x:Name="tblAge" HorizontalAlignment="Left" Height="19" Margin="15,158,0,0" TextWrapping="Wrap" Text="Age" VerticalAlignment="Top" Width="72"/>
+        <TextBlock x:Name="tblPersonality" HorizontalAlignment="Left" Height="22" Margin="15,182,0,0" TextWrapping="Wrap" Text="Personality" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbPersonality" HorizontalAlignment="Left" Height="59" Margin="92,178,0,0" TextWrapping="Wrap" Text="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="329" MaxLength="200" />
+        <DataGrid x:Name="dgCatObservation" HorizontalAlignment="Left" Height="147" Margin="12,279,0,0" VerticalAlignment="Top" Width="1086" ItemsSource="{Binding CatObservations, Mode=OneWay}" CanUserAddRows="False" AutoGenerateColumns="False" CurrentCellChanged="dgCatObservation_CurrentCellChanged" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Width="75" IsReadOnly="True"   
+                                    Binding="{Binding ObservateDate, StringFormat=yyyy/MM/dd}" />
+                <DataGridTextColumn Header="Time" Width="75" IsReadOnly="True"   
+                                    Binding="{Binding ObservateTime, StringFormat=hh:mm}" />
+                <DataGridTextColumn Header="CatName" Width="100" IsReadOnly="True"   
+                                    Binding="{Binding CatName}" />
+                <DataGridTextColumn Header="HairPattern" Width="100" IsReadOnly="True"  
+                                    Binding="{Binding HairPattern}" />
+                <DataGridTextColumn Header="Gender" Width="50" IsReadOnly="True"  
+                                    Binding="{Binding GenderText}" />
+                <DataGridTextColumn Header="BodyType" Width="80" IsReadOnly="True"  
+                                    Binding="{Binding BodyTypeText}" />
+                <DataGridTextColumn Header="FaceType" Width="120" IsReadOnly="True"  
+                                    Binding="{Binding FaceType}" />
+                <DataGridTextColumn Header="Age" Width="60" IsReadOnly="True"  
+                                    Binding="{Binding AgeText}" />
+                <DataGridTextColumn Header="Personality" Width="120" IsReadOnly="True"  
+                                    Binding="{Binding Personality}" />
+                <DataGridTextColumn Header="Country" Width="120" IsReadOnly="True"  
+                                    Binding="{Binding Country}" />
+                <DataGridTextColumn Header="Area" Width="150" IsReadOnly="True"  
+                                    Binding="{Binding Area}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Button x:Name="btnApply" Content="Regist/Update" HorizontalAlignment="Left" Height="27" Margin="987,18,0,0" VerticalAlignment="Top" Width="90" Click="btnApply_Click"/>
+        <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Height="27" Margin="987,61,0,0" VerticalAlignment="Top" Width="90" Click="btnDelete_Click"/>
+        <Button x:Name="btnCopy" HorizontalAlignment="Left" Height="22" Margin="872,14,0,0" VerticalAlignment="Top" Width="25" Click="btnCopy_Click">
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Copy Entry"/>
+            </ToolTipService.ToolTip>
+            <Viewbox Width="24" Height="17">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" Fill="Black" />
+                </Canvas>
+            </Viewbox>
+        </Button>
+        <Button x:Name="btnErase" HorizontalAlignment="Left" Height="22" Margin="872,41,0,0" VerticalAlignment="Top" Width="25" Click="btnErase_Click">
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Erase Entry"/>
+            </ToolTipService.ToolTip>
+            <Viewbox Width="24" Height="17">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" Fill="Black" />
+                </Canvas>
+            </Viewbox>
+        </Button>
+        <Button x:Name="btnFilter" HorizontalAlignment="Left" Height="22" Margin="1068,243,0,0" VerticalAlignment="Top" Width="25" Click="btnFilter_Click">
+            <ToolTipService.ToolTip>
+                <ToolTip Content="List Filter"/>
+            </ToolTipService.ToolTip>
+            <Viewbox Width="24" Height="17">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" Fill="Black" />
+                </Canvas>
+            </Viewbox>
+        </Button>
+
+        <TextBlock x:Name="tblCountry" HorizontalAlignment="Left" Height="22" Margin="431,151,0,0" TextWrapping="Wrap" Text="Country" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbCountry" HorizontalAlignment="Left" Height="23" Margin="508,150,0,0" TextWrapping="Wrap" Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="329" MaxLength="100"/>
+        <TextBlock x:Name="tblArea" HorizontalAlignment="Left" Height="22" Margin="431,182,0,0" TextWrapping="Wrap" Text="Area" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="tbArea" HorizontalAlignment="Left" Height="59" Margin="508,178,0,0" TextWrapping="Wrap" Text="{Binding Area, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="329" MaxLength="200" />
+        <StackPanel x:Name="pnlFilter" HorizontalAlignment="Left" Height="22" Margin="950,243,0,0" VerticalAlignment="Top" Width="113" Orientation="Horizontal">
+            <RadioButton x:Name="rbFilterUp" Content="Up" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilter, ConverterParameter=Up, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbFilterDown" Content="Down" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilterType, ConverterParameter=Down, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <DataGrid x:Name="dgCatObservation_Copy" HorizontalAlignment="Left" Height="147" Margin="12,279,0,0" VerticalAlignment="Top" Width="1086" ItemsSource="{Binding CatObservations, Mode=OneWay}" CanUserAddRows="False" AutoGenerateColumns="False" CurrentCellChanged="dgCatObservation_CurrentCellChanged" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Width="75" IsReadOnly="True"   
+                    Binding="{Binding ObservateDate, StringFormat=yyyy/MM/dd}" />
+                <DataGridTextColumn Header="Time" Width="75" IsReadOnly="True"   
+                    Binding="{Binding ObservateTime, StringFormat=hh:mm}" />
+                <DataGridTextColumn Header="CatName" Width="100" IsReadOnly="True"   
+                    Binding="{Binding CatName}" />
+                <DataGridTextColumn Header="HairPattern" Width="100" IsReadOnly="True"  
+                    Binding="{Binding HairPattern}" />
+                <DataGridTextColumn Header="Gender" Width="50" IsReadOnly="True"  
+                    Binding="{Binding GenderText}" />
+                <DataGridTextColumn Header="BodyType" Width="80" IsReadOnly="True"  
+                    Binding="{Binding BodyTypeText}" />
+                <DataGridTextColumn Header="FaceType" Width="120" IsReadOnly="True"  
+                    Binding="{Binding FaceType}" />
+                <DataGridTextColumn Header="Age" Width="60" IsReadOnly="True"  
+                    Binding="{Binding AgeText}" />
+                <DataGridTextColumn Header="Personality" Width="120" IsReadOnly="True"  
+                    Binding="{Binding Personality}" />
+                <DataGridTextColumn Header="Country" Width="120" IsReadOnly="True"  
+                    Binding="{Binding Country}" />
+                <DataGridTextColumn Header="Area" Width="150" IsReadOnly="True"  
+                    Binding="{Binding Area}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Button x:Name="btnFileSave" HorizontalAlignment="Left" Height="22" Margin="1068,431,0,0" VerticalAlignment="Top" Width="25" Click="btnFileSave_Click">
+            <ToolTipService.ToolTip>
+                <ToolTip Content="List Filter"/>
+            </ToolTipService.ToolTip>
+            <Viewbox Width="24" Height="17">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" Fill="Black" />
+                </Canvas>
+            </Viewbox>
+        </Button>
+    </Grid>
+</Window>
