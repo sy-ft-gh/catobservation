@@ -348,3 +348,12 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/Migrations/201912261534181_ModifyCatObservation1.resx
+/Migrations/201912261534181_ModifyCatObservation1.Designer.cs
+/Migrations/201912261534181_ModifyCatObservation1.cs
+/Migrations/201912231434525_AddCatObservation.resx
+/Migrations/201912231434525_AddCatObservation.Designer.cs
+/Migrations/201912231434525_AddCatObservation.cs
+/Migrations/201912191555000_init.resx
+/Migrations/201912191555000_init.Designer.cs
+/Migrations/201912191555000_init.cs
