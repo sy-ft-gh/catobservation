@@ -273,26 +273,14 @@ namespace cat.View {
         /// </summary>
         /// <returns>Succeed-> Edited Data, Failure -> null </returns>
         public CatObservation ValidateEntry() {
-            var CatNameProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(Cat), nameof(Cat.CatName));
+        	// TODO: Make Code(Add Validate)
+        	/* Length Check Sample
+            var CatNameProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.CatName));
             if (!string.IsNullOrEmpty(this.editData.CatName) && Encoding.Unicode.GetByteCount(this.editData.CatName) > CatNameProp.Length) {
                 MessageBox.Show(CatNameProp.ErrorMessage, "Cat Observation",MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
-            }
-            var HairPatternProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(Cat), nameof(Cat.HairPattern));
-            if (!string.IsNullOrEmpty(this.editData.HairPattern) &&  Encoding.Unicode.GetByteCount(this.editData.HairPattern) > HairPatternProp.Length) {
-                MessageBox.Show(HairPatternProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            var FaceTypeProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(Cat), nameof(Cat.FaceType));
-            if (!string.IsNullOrEmpty(this.editData.FaceType) && Encoding.Unicode.GetByteCount(this.editData.FaceType) > FaceTypeProp.Length) {
-                MessageBox.Show(FaceTypeProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            var PersonalityProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(Cat), nameof(Cat.FaceType));
-            if (!string.IsNullOrEmpty(this.editData.Personality) && Encoding.Unicode.GetByteCount(this.editData.Personality) > PersonalityProp.Length) {
-                MessageBox.Show(PersonalityProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
+            }        	
+        	*/
 
 
             return GetEntry();
