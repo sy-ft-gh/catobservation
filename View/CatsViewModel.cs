@@ -248,7 +248,7 @@ namespace cat.View {
         /// </summary>
         public List<CatObservationDisplay> CatObservations {
             get {
-                return codList;
+                return this.codList;
             }
             set {
                 this.codList = new List<CatObservationDisplay>(value);

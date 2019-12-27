@@ -112,7 +112,7 @@ namespace cat.Model {
         /// <summary>
         /// Area Name
         /// </summary>
-        [MaxLength(250, ErrorMessage = "Enter the Area within 255 Bytes")]
+        [MaxLength(250, ErrorMessage = "Enter the Area within 250 Bytes")]
         public string Area { get; set; }
 
         /// <summary>
