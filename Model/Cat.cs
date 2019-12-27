@@ -127,10 +127,6 @@ namespace cat.Model {
             this.UpdateDate = src.UpdateDate;
         }
     }
-
-    public abstract class AbsCatDisplay { 
-    
-    }
     /// <summary>
     /// Cat Data for Display
     /// </summary>

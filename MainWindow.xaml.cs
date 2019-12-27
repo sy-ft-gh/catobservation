@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 
 using log4net;
@@ -97,10 +98,10 @@ namespace cat {
             using (var dbTransaction = CatCntext.Database.BeginTransaction(IsolationLevel.ReadCommitted)) {
                 string ErrorMessage = null;
                 try {
-                    // 2.Reg or Upd Jdg (CatId > 0 -> Update else Reg)
+                    // 2.Reg or Upd Jdg (ObservateDate & CatId Exists )
+                    var exst = CatCntext.CatObservations.FirstOrDefault(x => x.ObservateDate == cat.ObservateDate && x.ObservateTime == cat.ObservateTime &&  x.CatId == cat.CatId);
                     // 3.Execute
-                    if (!(cat.CatId > 0)) {
-                        // TODO: Make Code(Cat Master Exists Check)
+                    if (exst is null) {
                         // 3.1 Cat Master Exists Check
 
                         // Generate Error if there is no Master data 
@@ -116,22 +117,21 @@ namespace cat {
                     } else {
                         // 3.2 Update
                         // Select And Lock Registed Data
-                        var RegistedData = CatCntext.Database.SqlQuery<Cat>("SELECT * FROM CATOBSERVATIONS WITH (UPDLOCK) WHERE OBSERVATEDATE = '" + ((DateTime)vm.ObservateDate).ToLongDateString() + "' AND OBSERVATETIME = '" + ((DateTime)vm.ObservateTime).ToString() + "' AND CATID = " + vm.CatId.ToString()).ToList();
+                        var RegistedData = CatCntext.Database.SqlQuery<CatObservation>("SELECT * FROM CATOBSERVATIONS WITH (UPDLOCK) WHERE OBSERVATEDATE = '" + ((DateTime)cat.ObservateDate).ToShortDateString() + "' AND OBSERVATETIME = '" + ((DateTime)cat.ObservateTime).ToString() + "' AND CATID = " + cat.CatId.ToString()).ToList();
                         // 3.2.1 Is Not Data
                         if (RegistedData.Count != 1) {
                             // Exit for Show deleted error
                             ErrorMessage = "This Data is Not Exists";
                         } else {
                             // 3.2.2 Is Data
-                            var upd = CatCntext.CatObservations.Single(x => x.CatId == cat.CatId);
                             // Check Update Time Is Modified
                             if (cat.UpdateDate > RegistedData.First().UpdateDate) {
                                 // Is Modified -> Over Write Confirm
                                 if (MessageBox.Show("Is Already UPDATED. Wanna Over Write??", "Cat Observation", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel) return;
                             }
                             // Is Not Modified or Over Write -> Update Data
-                            upd.CopyFrom(cat);
-                            upd.UpdateDate = CatCntext.GetDBDate();
+                            exst.CopyFrom(cat);
+                            exst.UpdateDate = CatCntext.GetDBDate();
                             CatCntext.SaveChanges();
                         }
                     }
@@ -279,6 +279,17 @@ namespace cat {
             }
 
             vm.CatObservations = dspList; 
+        }
+        /// <summary>
+        /// Write Windows EventLog Message
+        /// </summary>
+        /// <param name="logString"> Log Text </param>
+        /// <param name="ErrorOrInfo"> </param>
+        private void WriteEventLog(string logString, bool ErrorOrInfo) {
+            // Write Entry
+            EventLog.WriteEntry(
+                "Cat", "CatObservation:r" + logString,
+                ErrorOrInfo ? EventLogEntryType.Error : EventLogEntryType.Information);
         }
     }
 }

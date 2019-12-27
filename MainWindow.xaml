@@ -116,33 +116,6 @@
             <RadioButton x:Name="rbFilterUp" Content="Up" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilter, ConverterParameter=Up, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <RadioButton x:Name="rbFilterDown" Content="Down" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilterType, ConverterParameter=Down, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
-        <DataGrid x:Name="dgCatObservation_Copy" HorizontalAlignment="Left" Height="147" Margin="12,279,0,0" VerticalAlignment="Top" Width="1086" ItemsSource="{Binding CatObservations, Mode=OneWay}" CanUserAddRows="False" AutoGenerateColumns="False" CurrentCellChanged="dgCatObservation_CurrentCellChanged" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Date" Width="75" IsReadOnly="True"   
-                    Binding="{Binding ObservateDate, StringFormat=yyyy/MM/dd}" />
-                <DataGridTextColumn Header="Time" Width="75" IsReadOnly="True"   
-                    Binding="{Binding ObservateTime, StringFormat=hh:mm}" />
-                <DataGridTextColumn Header="CatName" Width="100" IsReadOnly="True"   
-                    Binding="{Binding CatName}" />
-                <DataGridTextColumn Header="HairPattern" Width="100" IsReadOnly="True"  
-                    Binding="{Binding HairPattern}" />
-                <DataGridTextColumn Header="Gender" Width="50" IsReadOnly="True"  
-                    Binding="{Binding GenderText}" />
-                <DataGridTextColumn Header="BodyType" Width="80" IsReadOnly="True"  
-                    Binding="{Binding BodyTypeText}" />
-                <DataGridTextColumn Header="FaceType" Width="120" IsReadOnly="True"  
-                    Binding="{Binding FaceType}" />
-                <DataGridTextColumn Header="Age" Width="60" IsReadOnly="True"  
-                    Binding="{Binding AgeText}" />
-                <DataGridTextColumn Header="Personality" Width="120" IsReadOnly="True"  
-                    Binding="{Binding Personality}" />
-                <DataGridTextColumn Header="Country" Width="120" IsReadOnly="True"  
-                    Binding="{Binding Country}" />
-                <DataGridTextColumn Header="Area" Width="150" IsReadOnly="True"  
-                    Binding="{Binding Area}" />
-            </DataGrid.Columns>
-
-        </DataGrid>
         <Button x:Name="btnFileSave" HorizontalAlignment="Left" Height="22" Margin="1068,431,0,0" VerticalAlignment="Top" Width="25" Click="btnFileSave_Click">
             <ToolTipService.ToolTip>
                 <ToolTip Content="List Filter"/>
