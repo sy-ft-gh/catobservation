@@ -114,7 +114,7 @@
         <TextBox x:Name="tbArea" HorizontalAlignment="Left" Height="59" Margin="508,178,0,0" TextWrapping="Wrap" Text="{Binding Area, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="329" MaxLength="200" />
         <StackPanel x:Name="pnlFilter" HorizontalAlignment="Left" Height="22" Margin="950,243,0,0" VerticalAlignment="Top" Width="113" Orientation="Horizontal">
             <RadioButton x:Name="rbFilterUp" Content="Up" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilter, ConverterParameter=Up, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <RadioButton x:Name="rbFilterDown" Content="Down" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilterType, ConverterParameter=Down, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <RadioButton x:Name="rbFilterDown" Content="Down" Margin="10,0,0,0" IsChecked="{Binding ObservateDateFilter, ConverterParameter=Down, Converter={StaticResource EnumToBoolean}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <Button x:Name="btnFileSave" HorizontalAlignment="Left" Height="22" Margin="1068,431,0,0" VerticalAlignment="Top" Width="25" Click="btnFileSave_Click">
             <ToolTipService.ToolTip>
