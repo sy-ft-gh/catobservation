@@ -225,9 +225,23 @@ namespace cat.View {
         /// Display Cat Master Date items in input area 
         /// </summary>
         /// <param name="master"></param>
-        public void CatMasterToEdit(Cat master) { 
-            // TODO: Make Code(Master Data Items into Input Area)
-        
+        public void CatMasterToEdit(Cat master) {
+            // Master Data Items into Input Area
+            this.editData.CatName = master.CatName;
+            this.editData.HairPattern = master.HairPattern;
+            this.editData.FaceType = master.FaceType;
+            this.editData.Personality = master.Personality;
+            this.editData.Gender = master.Gender;
+            this.editData.BodyType = master.BodyType;
+            this.editData.Age = master.Age;
+            //Post Change Event  
+            this.OnPropertyChanged(nameof(CatName));
+            this.OnPropertyChanged(nameof(HairPattern));
+            this.OnPropertyChanged(nameof(FaceType));
+            this.OnPropertyChanged(nameof(Personality));
+            this.OnPropertyChanged(nameof(Gender));
+            this.OnPropertyChanged(nameof(BodyType));
+            this.OnPropertyChanged(nameof(Age));
         }
 
         /// <summary>
@@ -273,15 +287,48 @@ namespace cat.View {
         /// </summary>
         /// <returns>Succeed-> Edited Data, Failure -> null </returns>
         public CatObservation ValidateEntry() {
-        	// TODO: Make Code(Add Validate)
-        	/* Length Check Sample
+            if (this.editData.ObservateDate is null) {
+                MessageBox.Show("Input CatObservateDate(Date)", "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            if (this.editData.ObservateTime is null) {
+                MessageBox.Show("Input CatObservateDate(Time)", "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            if (this.editData.CatId is null || this.editData.CatId < 1) {
+                MessageBox.Show("Select Cat Master", "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
             var CatNameProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.CatName));
             if (!string.IsNullOrEmpty(this.editData.CatName) && Encoding.Unicode.GetByteCount(this.editData.CatName) > CatNameProp.Length) {
                 MessageBox.Show(CatNameProp.ErrorMessage, "Cat Observation",MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
-            }        	
-        	*/
-
+            }
+            var HairPatternProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.HairPattern));
+            if (!string.IsNullOrEmpty(this.editData.HairPattern) &&  Encoding.Unicode.GetByteCount(this.editData.HairPattern) > HairPatternProp.Length) {
+                MessageBox.Show(HairPatternProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            var FaceTypeProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.FaceType));
+            if (!string.IsNullOrEmpty(this.editData.FaceType) && Encoding.Unicode.GetByteCount(this.editData.FaceType) > FaceTypeProp.Length) {
+                MessageBox.Show(FaceTypeProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            var PersonalityProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.Personality));
+            if (!string.IsNullOrEmpty(this.editData.Personality) && Encoding.Unicode.GetByteCount(this.editData.Personality) > PersonalityProp.Length) {
+                MessageBox.Show(PersonalityProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            var CountryProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.Country));
+            if (!string.IsNullOrEmpty(this.editData.Country) && Encoding.Unicode.GetByteCount(this.editData.Country) > CountryProp.Length) {
+                MessageBox.Show(CountryProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            var AreaProp = GetPropertyAttribute<MaxLengthAttribute>(typeof(CatObservation), nameof(CatObservation.Area));
+            if (!string.IsNullOrEmpty(this.editData.Area) && Encoding.Unicode.GetByteCount(this.editData.Area) > AreaProp.Length) {
+                MessageBox.Show(AreaProp.ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
 
             return GetEntry();
         }
