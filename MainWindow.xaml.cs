@@ -62,7 +62,7 @@ namespace cat {
         /// <param name="e">Event Object</param>
         private void dgCatObservation_CurrentCellChanged(object sender, EventArgs e) {
             int RowCnt = dgCatObservation.Items.IndexOf(dgCatObservation.CurrentItem); 
-            if (RowCnt >= 0 && vm.CatEdit.CatId != vm.CatObservations[RowCnt].CatId) {
+            if (RowCnt >= 0) {
                 vm.CatEdit = vm.CatObservations[RowCnt];
             }
         }
@@ -296,12 +296,19 @@ namespace cat {
                         select co;
             switch (datefilter) {
                 case ObservateDateFilterType.Up:
-                    query = query.OrderBy(x => x.ObservateDate).ThenBy(x => x.ObservateTime).ThenBy(x => x.CatId);
+                    if (filter.ObservateDate != null)
+                        query = query.Where(x => x.ObservateDate >= filter.ObservateDate);
+                    if (filter.ObservateTime != null)
+                        query = query.Where(x => x.ObservateTime >= filter.ObservateTime);
                     break;
                 default:
-                    query = query.OrderByDescending(x => x.ObservateDate).ThenByDescending(x => x.ObservateTime).ThenByDescending(x => x.CatId);
+                    if (filter.ObservateDate != null)
+                        query = query.Where(x => x.ObservateDate <= filter.ObservateDate);
+                    if (filter.ObservateTime != null)
+                        query = query.Where(x => x.ObservateTime <= filter.ObservateTime);
                     break;
             }
+            query = query.OrderBy(x => x.ObservateDate).ThenBy(x => x.ObservateTime).ThenBy(x => x.CatId);
             foreach (var cat in query) {
                 CatObservationDisplay dsp = new CatObservationDisplay();
                 dsp.CopyFrom(cat);
