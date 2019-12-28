@@ -36,9 +36,10 @@ namespace cat {
         /// </summary>
         private CatObservation LastSearchFilter = new CatObservation();
 
-        // ロガーの取得
-        // (補足)log4net.config の appender@name に
-        //       引数で渡した名前の appender は存在しないので root が取得される
+        /// <summary>
+        /// Get Log4j Logger
+        /// Initialize from Self Class Info
+        /// </summary>
         private ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
