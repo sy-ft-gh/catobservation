@@ -145,6 +145,7 @@ namespace cat {
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
                         this.GetCatObservations(LastSearchFilter);
+                        vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
                         MessageBox.Show(ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -204,6 +205,7 @@ namespace cat {
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
                         this.GetCatObservations(LastSearchFilter);
+                        vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
                         MessageBox.Show(ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -269,6 +271,7 @@ namespace cat {
         /// Get Cat Observation List
         /// </summary>
         private void GetCatObservations(CatObservation filter) {
+            // TODO: MakeCode (Add Order By Switch)
             List < CatObservationDisplay > dspList = new List<CatObservationDisplay>();
             var query = from co in CatCntext.CatObservations
                         orderby co.ObservateDate, co.ObservateTime, co.CatId
