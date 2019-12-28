@@ -61,7 +61,7 @@ namespace cat {
         /// <param name="e">Event Object</param>
         private void dgCatObservation_CurrentCellChanged(object sender, EventArgs e) {
             int RowCnt = dgCatObservation.Items.IndexOf(dgCatObservation.CurrentItem); 
-            if (RowCnt >= 0 && vm.CatEdit.CatId != vm.CatObservations[RowCnt].CatId) {
+            if (RowCnt >= 0) {
                 vm.CatEdit = vm.CatObservations[RowCnt];
             }
         }
