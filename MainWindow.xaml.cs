@@ -149,6 +149,7 @@ namespace cat {
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
                         this.GetCatObservations(LastSearchFilter, LastObservateDateFilterType);
+                        vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
                         MessageBox.Show(ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -208,6 +209,7 @@ namespace cat {
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
                         this.GetCatObservations(LastSearchFilter, LastObservateDateFilterType);
+                        vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
                         // Error Log Output (log4net)
