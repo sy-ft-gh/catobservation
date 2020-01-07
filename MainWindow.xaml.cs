@@ -35,6 +35,7 @@ namespace cat {
         /// Last Observate Filter Setting
         /// </summary>
         private CatObservation LastSearchFilter = new CatObservation();
+        private ObservateDateFilterType LastObservateDateFilterType;
 
         /// <summary>
         /// Get Log4j Logger
@@ -104,17 +105,20 @@ namespace cat {
                     // 3.Execute
                     if (exst is null) {
                         // 3.1 Cat Master Exists Check
-
-                        // Generate Error if there is no Master data 
-
-                        // 3.2 Regist
-                        // Insert Record
-                        CatObservation ins = new CatObservation();
-                        ins.CopyFrom(cat);
-                        ins.UpdateDate = CatCntext.GetDBDate();
-                        ins.RegistDate = ins.UpdateDate;
-                        CatCntext.CatObservations.Add(ins);
-                        CatCntext.SaveChanges();
+                        var mst = CatCntext.Cats.Single(x => x.CatId == cat.CatId);
+                        if (mst == null) {
+                            // Generate Error if there is no Master data 
+                            ErrorMessage = "Master Data is Not Exists";
+                        } else {
+                            // 3.2 Regist
+                            // Insert Record
+                            CatObservation ins = new CatObservation();
+                            ins.CopyFrom(cat);
+                            ins.UpdateDate = CatCntext.GetDBDate();
+                            ins.RegistDate = ins.UpdateDate;
+                            CatCntext.CatObservations.Add(ins);
+                            CatCntext.SaveChanges();
+                        }
                     } else {
                         // 3.2 Update
                         // Select And Lock Registed Data
@@ -144,12 +148,13 @@ namespace cat {
                     // Failue -> Rollback, Show Error Message
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
-                        this.GetCatObservations(LastSearchFilter);
+                        this.GetCatObservations(LastSearchFilter, LastObservateDateFilterType);
                         vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
                         MessageBox.Show(ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
-                        // TODO: MakeCode (Error Log Output (Eventlog))
+                        // Error Log Output (Eventlog)
+                        WriteEventLog(ErrorMessage, true);
                     }
                 }
             }
@@ -161,8 +166,7 @@ namespace cat {
         /// <param name="sender">Cause Object</param>
         /// <param name="e">Event Object</param>
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
-            // TODO: MekeCode )Output log4netlog (Method in/out))
-
+            logger.Info("START:btnDelete_Click");
             CatObservation cat = null;
             // 0.PreProcessing(Validattion)
             // Is there Selected ?
@@ -178,7 +182,7 @@ namespace cat {
                     // 2.Execute
                     // 2.1 Delete Check
                     // Select And Lock Registed Data
-                    var RegistedData = CatCntext.Database.SqlQuery<Cat>("SELECT * FROM CATOBSERVATIONS WITH (UPDLOCK) WHERE OBSERVATEDATE = '" + ((DateTime)vm.ObservateDate).ToLongDateString() + "' AND OBSERVATETIME = '" + ((DateTime)vm.ObservateTime).ToString() + "' AND CATID = " + vm.CatId.ToString()).ToList();
+                    var RegistedData = CatCntext.Database.SqlQuery<CatObservation>("SELECT * FROM CATOBSERVATIONS WITH (UPDLOCK) WHERE OBSERVATEDATE = '" + ((DateTime)vm.ObservateDate).ToShortDateString() + "' AND OBSERVATETIME = '" + ((DateTime)vm.ObservateTime).ToString() + "' AND CATID = " + vm.CatId.ToString()).ToList();
 
                     // 2.2.1 Is Not Data
                     // Exit for Show deleted error
@@ -204,13 +208,15 @@ namespace cat {
                     // Failue -> Rollback, Show Error Message
                     if (string.IsNullOrEmpty(ErrorMessage)) {
                         dbTransaction.Commit();
-                        this.GetCatObservations(LastSearchFilter);
+                        this.GetCatObservations(LastSearchFilter, LastObservateDateFilterType);
                         vm.ClearEdit();
                     } else {
                         dbTransaction.Rollback();
+                        // Error Log Output (log4net)
+                        logger.Error("DeleteError:" + ErrorMessage);
                         MessageBox.Show(ErrorMessage, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
-                        // TODO: MakeCode (Error Log Output (log4net))
                     }
+                    logger.Info("END:btnDelete_Click");
                 }
             }
 
@@ -225,9 +231,10 @@ namespace cat {
             CatObservation input = vm.GetEntry();
             LastSearchFilter.ObservateDate = input.ObservateDate;
             LastSearchFilter.ObservateTime = input.ObservateTime;
+            LastObservateDateFilterType = vm.ObservateDateFilter;
             // Arange Filter (if you want to do it)
 
-            GetCatObservations(LastSearchFilter);
+            GetCatObservations(LastSearchFilter, LastObservateDateFilterType);
         }
 
         /// <summary>
@@ -236,7 +243,8 @@ namespace cat {
         /// <param name="sender">Cause Object</param>
         /// <param name="e">Event Object</param>
         private void cbCatId_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) {
-            // TODO: Make Code(Call CatMasterToEdit)
+            if (cbCatId.SelectedValue != null && (int)cbCatId.SelectedValue > 0)
+                vm.CatMasterToEdit((Cat)cbCatId.SelectedItem);
         }
 
         /// <summary>
@@ -245,18 +253,32 @@ namespace cat {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnFileSave_Click(object sender, RoutedEventArgs e) {
-            // TODO: Make Code(Save vm.CatObservations)
-
             // 1.Save File Name collect
-            // Call SaveFileDialog
-            try {
-                // 2. File Save
-                // 2.1 Create StreamWriter
-                // 2.2 Each Grid Datas Write
-            } catch (SystemException ex) {
-                // -> Save Error log
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            // initialize Directory (MyDoc)
+            dlg.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            dlg.Title = "Select Save File";
+            dlg.Filter = "CSV(*.csv)|*.csv";
 
-                // -> Error Message Show
+            if (dlg.ShowDialog() == true) {
+                // Call SaveFileDialog
+                try {
+                    // 2. File Save
+                    // 2.1 Create StreamWriter
+                    using (var sw = new System.IO.StreamWriter(dlg.FileName, false, System.Text.Encoding.GetEncoding("Shift_JIS"))) {
+                        // 2.2 Each Grid Datas Write
+                        Func<string, string> dqot = (str) => { return "\"" + str.Replace("\"", "\"\"") + "\""; };
+                        foreach (var d in vm.CatObservations)
+                            sw.WriteLine(dqot(d.ObservateDate?.ToShortDateString()) + "," + dqot(d.ObservateTime?.ToShortTimeString()) + "," + dqot(d.CatName) + "," + dqot(d.HairPattern));
+                    }
+                    MessageBox.Show("Output Complete", "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Information);
+                } catch (SystemException ex) {
+                    // -> Save Error log
+                    logger.Error("File OutputError:" + ex.Message);
+                    // -> Error Message Show
+                    MessageBox.Show(ex.Message, "Cat Observation", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                }
             }
         }
 
@@ -270,12 +292,25 @@ namespace cat {
         /// <summary>
         /// Get Cat Observation List
         /// </summary>
-        private void GetCatObservations(CatObservation filter) {
-            // TODO: MakeCode (Add Order By Switch)
-            List < CatObservationDisplay > dspList = new List<CatObservationDisplay>();
+        private void GetCatObservations(CatObservation filter, ObservateDateFilterType datefilter) {
+            List <CatObservationDisplay> dspList = new List<CatObservationDisplay>();
             var query = from co in CatCntext.CatObservations
-                        orderby co.ObservateDate, co.ObservateTime, co.CatId
                         select co;
+            switch (datefilter) {
+                case ObservateDateFilterType.Up:
+                    if (filter.ObservateDate != null)
+                        query = query.Where(x => x.ObservateDate >= filter.ObservateDate);
+                    if (filter.ObservateTime != null)
+                        query = query.Where(x => x.ObservateTime >= filter.ObservateTime);
+                    break;
+                default:
+                    if (filter.ObservateDate != null)
+                        query = query.Where(x => x.ObservateDate <= filter.ObservateDate);
+                    if (filter.ObservateTime != null)
+                        query = query.Where(x => x.ObservateTime <= filter.ObservateTime);
+                    break;
+            }
+            query = query.OrderBy(x => x.ObservateDate).ThenBy(x => x.ObservateTime).ThenBy(x => x.CatId);
             foreach (var cat in query) {
                 CatObservationDisplay dsp = new CatObservationDisplay();
                 dsp.CopyFrom(cat);

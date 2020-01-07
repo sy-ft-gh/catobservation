@@ -53,7 +53,7 @@
                 <DataGridTextColumn Header="Date" Width="75" IsReadOnly="True"   
                                     Binding="{Binding ObservateDate, StringFormat=yyyy/MM/dd}" />
                 <DataGridTextColumn Header="Time" Width="75" IsReadOnly="True"   
-                                    Binding="{Binding ObservateTime, StringFormat=hh:mm}" />
+                                    Binding="{Binding ObservateTime, StringFormat=HH:mm}" />
                 <DataGridTextColumn Header="CatName" Width="100" IsReadOnly="True"   
                                     Binding="{Binding CatName}" />
                 <DataGridTextColumn Header="HairPattern" Width="100" IsReadOnly="True"  
