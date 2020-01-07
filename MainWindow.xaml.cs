@@ -190,14 +190,14 @@ namespace cat {
                         ErrorMessage = "Selected Data Is Deleted.";
                     } else {
                         // 2.2.2 Is Data
-                        var tgt = CatCntext.Cats.Single(x => x.CatId == vm.CatId);
+                        var tgt = CatCntext.CatObservations.Single(x => x.ObservateDate == cat.ObservateDate && x.ObservateTime == cat.ObservateTime && x.CatId == cat.CatId);
                         // Check Update Time Is Modified
                         if (cat.UpdateDate < tgt.UpdateDate) {
                             // Is Modified -> Confirm Delete (Continue or stop)
                             if (MessageBox.Show("Is Already UPDATED. Wanna Force Delete??", "Cat Observation", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel) return;
                         }
                         // Is Not Modified or Force Delete
-                        CatCntext.Cats.Remove(tgt);
+                        CatCntext.CatObservations.Remove(tgt);
                         CatCntext.SaveChanges();
                     }
                 } catch (Exception ex) {
